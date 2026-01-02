@@ -23,7 +23,7 @@ jobs:
       - name: Run container
         run: |
           docker run -d \
-            --name react-app \
+            --name react-app \ 
             -p 80:80 \
             --restart always \
             react-app:latest
