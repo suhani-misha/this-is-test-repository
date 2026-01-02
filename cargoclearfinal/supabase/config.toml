@@ -1,0 +1,25 @@
+project_id = "tqjwajovekmnrjwzgdki"
+
+[functions.send-notification]
+verify_jwt = true
+
+[functions.create-user]
+verify_jwt = true
+
+[functions.seed-admin]
+verify_jwt = false
+
+[functions.send-report]
+verify_jwt = true
+
+[functions.send-scheduled-reports]
+verify_jwt = false
+
+[functions.reset-password]
+verify_jwt = true
+
+[functions.send-otp]
+verify_jwt = false
+
+[functions.verify-otp]
+verify_jwt = false
