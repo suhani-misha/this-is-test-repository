@@ -1,0 +1,29 @@
+name: Build & Deploy to EC2 (Docker)
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Stop existing container
+        run: |
+          docker stop react-app || true
+          docker rm react-app || true
+
+      - name: Build Docker image
+        run: docker build -t react-app:latest .
+
+      - name: Run container
+        run: |
+          docker run -d \
+            --name react-app \
+            -p 80:80 \
+            --restart always \
+            react-app:latest
