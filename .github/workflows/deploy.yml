@@ -1,29 +1,39 @@
-name: Build & Deploy React (Docker)
+name: Build and Run React Docker
 
 on:
   push:
-    branches: ["main"]
+    branches:
+      - main  # or your branch name
+  workflow_dispatch:
 
 jobs:
-  deploy:
-    runs-on: [self-hosted, linux]
-
+  react-docker:
+    runs-on: self-hosted
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      # 1️⃣ Checkout your repo
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      - name: Stop existing container (if any)
+      # 2️⃣ Set up Node (optional if your Dockerfile needs it)
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      # 3️⃣ Stop and remove old container if exists
+      - name: Stop and remove old Docker container
         run: |
           docker stop react-app || true
           docker rm react-app || true
 
-      - name: Build React Docker image
-        run: docker build -t react-app:latest .
+      # 4️⃣ Build Docker image
+      - name: Build Docker image
+        run: docker build -t react-app .
 
-      - name: Run React container
-        run: |
-          docker run -d \
-            --name react-app \
-            -p 80:80 \
-            --restart always \
-            react-app:latest
+      # 5️⃣ Run Docker container
+      - name: Run Docker container
+        run: docker run -d -p 3000:3000 --name react-app react-app
+
+      # 6️⃣ Optional: Show running containers for verification
+      - name: List running Docker containers
+        run: docker ps
